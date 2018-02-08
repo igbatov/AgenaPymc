@@ -16,7 +16,7 @@ C:\ProgramData\Anaconda3\envs\BayesianHackers\etc\conda\activate\env_vars.bat
 
 
 # Usage in windows 10
-From anaconda console:
-cd path/to/AgenaPymc/
-activate BayesianHackers // BayesianHackers is my python environment, see Install
-jupyter notebook
+From anaconda console:  
+cd path/to/AgenaPymc/  
+activate BayesianHackers // BayesianHackers is my python environment, see Install  
+jupyter notebook  
