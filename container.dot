@@ -1,0 +1,11 @@
+digraph G {
+p_I_am_HIV_positive_soft [shape=invtriangle];
+I_dont_know;
+I_dont_know -> p_I_am_HIV_positive_soft  [label=I_dont_know];
+I_am_HIV_positive;
+I_am_HIV_positive -> p_I_am_HIV_positive_soft  [label=prior_HIV_positive];
+f_1_of_10000;
+f_1_of_10000 -> p_I_am_HIV_positive_soft  [label=f_1_of_10000];
+HIV_test_false_positive [style=filled];
+p_I_am_HIV_positive_soft -> HIV_test_false_positive  [label=p_I_am_HIV_positive_soft];
+}
