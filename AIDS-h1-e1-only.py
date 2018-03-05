@@ -33,32 +33,17 @@ from theano.compile.ops import as_op
 import theano
 
 with pm.Model() as model:
-    e2_prob = np.array([0.5, 0.5])
-    e2_virt_prob = np.array([
-        [1, 0],
-        [0, 1]
-    ])
-    h1_prob = np.array([
-       [0.0001, 0.9999],
-       [0.5, 0.5],
-    ])
+    h1_prob = np.array([0.5, 0.5])
     e1_prob = np.array([
         [0.999, 0.001],
         [0.001, 0.999],
     ])
     e1_virt_prob = np.array([
         [1, 0],
-        [0, 1]
+        [0, 1],
     ])
 
-    e2 = pm.Categorical('e2', p=e2_prob)
-    e2_virt_prob_shared = theano.shared(e2_virt_prob)
-    e2_virt_prob_final = e2_virt_prob_shared[e2]
-    e2_virt = pm.Categorical('e2_virt', p=e2_virt_prob_final, observed=0)
-
-    h1_prob_shared = theano.shared(h1_prob)  # make it global
-    h1_prob_final = h1_prob_shared[e2]
-    h1 = pm.Categorical('h1', p=h1_prob_final)
+    h1 = pm.Categorical('h1', p=h1_prob)
 
     e1_prob_shared = theano.shared(e1_prob)
     e1_prob_final = e1_prob_shared[h1]
@@ -69,7 +54,7 @@ with pm.Model() as model:
     e1_virt = pm.Categorical('e1_virt', p=e1_virt_prob_final, observed=0)
 
 with model:
-    SAMPLE_NUM = 20000
+    SAMPLE_NUM = 100000
     trace = pm.sample(SAMPLE_NUM)
     print(sum(trace['h1']) / float(SAMPLE_NUM))
-   # print(sum(trace['e1']) / float(SAMPLE_NUM))
+    print(sum(trace['e1']) / float(SAMPLE_NUM))
