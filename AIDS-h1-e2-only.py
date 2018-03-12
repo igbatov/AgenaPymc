@@ -33,22 +33,22 @@ from theano.compile.ops import as_op
 import theano
 
 with pm.Model() as model:
-    e2_prob = np.array([0.5, 0.5])
+    e2_prob = np.array([1, 0])
     e2_virt_prob = np.array([
-        [1, 0],
-        [0, 1]
+        [0.999999, 0.000001],
+        [0.000001, 0.999999]
     ])
     h1_prob = np.array([
-       [0.0001, 0.9999],
-       [0.5, 0.5],
+        [0.0001, 0.9999],
+        [0.5, 0.5],
     ])
     e1_prob = np.array([
         [0.999, 0.001],
         [0.001, 0.999],
     ])
     e1_virt_prob = np.array([
-        [1, 0],
-        [0, 1]
+        [0.999999, 0.000001],
+        [0.000001, 0.999999],
     ])
 
     e2 = pm.Categorical('e2', p=e2_prob)
@@ -73,3 +73,4 @@ with model:
     trace = pm.sample(SAMPLE_NUM)
     print(sum(trace['h1']) / float(SAMPLE_NUM))
     print(sum(trace['e1']) / float(SAMPLE_NUM))
+
