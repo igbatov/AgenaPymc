@@ -28,48 +28,22 @@ import numpy as np
 import pandas as pd
 
 import pymc3 as pm
-import theano.tensor as tt
+import theano.tensor as T
 from theano.compile.ops import as_op
 import theano
 
 with pm.Model() as model:
-    e2_prob = np.array([0.5, 0.5])
-    e2_virt_prob = np.array([
-        [1, 0],
-        [0, 1]
-    ])
-    h1_prob = np.array([
-       [0.0001, 0.9999],
-       [0.5, 0.5],
-    ])
-    e1_prob = np.array([
-        [0.999, 0.001],
-        [0.001, 0.999],
-    ])
-    e1_virt_prob = np.array([
-        [1, 0],
-        [0, 1]
-    ])
+    e2_prob = np.array([0.8, 0.2])
 
     e2 = pm.Categorical('e2', p=e2_prob)
-    e2_virt_prob_shared = theano.shared(e2_virt_prob)
-    e2_virt_prob_final = e2_virt_prob_shared[e2]
-    e2_virt = pm.Categorical('e2_virt', p=e2_virt_prob_final, observed=0)
 
-    h1_prob_shared = theano.shared(h1_prob)  # make it global
-    h1_prob_final = h1_prob_shared[e2]
-    h1 = pm.Categorical('h1', p=h1_prob_final)
-
-    e1_prob_shared = theano.shared(e1_prob)
-    e1_prob_final = e1_prob_shared[h1]
-    e1 = pm.Categorical('e1', p=e1_prob_final)
-
-    e1_virt_prob_shared = theano.shared(e1_virt_prob)  # make it global
-    e1_virt_prob_final = e1_virt_prob_shared[e1]  # select the prob array that "happened" thanks to parents
-    e1_virt = pm.Categorical('e1_virt', p=e1_virt_prob_final, observed=0)
+    C2_1 = pm.Normal('C2_1', mu=10, tau=2)
+    C2_2 = pm.Normal('C2_2', mu=100, tau=1)
+    C3_0 = pm.Deterministic('C3_0', T.switch(T.eq(e2, 0), C2_1, T.switch(T.eq(e2, 1), C2_2, 0)))
 
 with model:
-    SAMPLE_NUM = 100000
+    SAMPLE_NUM = 5000
     trace = pm.sample(SAMPLE_NUM)
-    print(sum(trace['h1']) / float(SAMPLE_NUM))
-    print(sum(trace['e1']) / float(SAMPLE_NUM))
+    pm.summary(trace, varnames=['C3_0'], start=1000)
+    pm.traceplot(trace[1000:], varnames=['C3_0'])
+    # print(sum(trace['C3_0']) / float(SAMPLE_NUM))

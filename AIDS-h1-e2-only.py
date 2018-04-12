@@ -33,7 +33,7 @@ from theano.compile.ops import as_op
 import theano
 
 with pm.Model() as model:
-    e2_prob = np.array([1, 0])
+    e2_prob = np.array([0.5, 0.5])
     e2_virt_prob = np.array([
         [0.999999, 0.000001],
         [0.000001, 0.999999]
@@ -51,10 +51,10 @@ with pm.Model() as model:
         [0.000001, 0.999999],
     ])
 
-    e2 = pm.Categorical('e2', p=e2_prob)
-    e2_virt_prob_shared = theano.shared(e2_virt_prob)
-    e2_virt_prob_final = e2_virt_prob_shared[e2]
-    e2_virt = pm.Categorical('e2_virt', p=e2_virt_prob_final, observed=0)
+    e2 = pm.Categorical('e2', p=e2_prob, observed=0)
+    # e2_virt_prob_shared = theano.shared(e2_virt_prob)
+    # e2_virt_prob_final = e2_virt_prob_shared[e2]
+    # e2_virt = pm.Categorical('e2_virt', p=e2_virt_prob_final, observed=0)
 
     h1_prob_shared = theano.shared(h1_prob)  # make it global
     h1_prob_final = h1_prob_shared[e2]
