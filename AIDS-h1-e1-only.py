@@ -22,7 +22,7 @@
 #
 # Approach:
 #   https: // github.com / pymc - devs / pymc3 / issues / 1790
-#   https: // gist.github.com / tbsexton / 1349864212b25cce91dbe5e336d794b4
+#   https://gist.github.com/tbsexton/1349864212b25cce91dbe5e336d794b4
 #
 import numpy as np
 import pandas as pd
