@@ -13,8 +13,9 @@ var softEvidence = function(s_value, value, p) {
 var model = function() {
   var pAFaulty = Uniform({a:0, b:1})
   var s_pAFaulty = sample(pAFaulty)
+
   var AStat = Binomial({p:s_pAFaulty, n:200})
-  observe(softEvidence(sample(AStat), 10, 0.9), true);
+  observe(softEvidence(sample(AStat), 10, 0.99), true);
 
   var pBFaulty = Uniform({a:0, b:1})
   var s_pBFaulty = sample(pBFaulty)
